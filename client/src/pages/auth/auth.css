@@ -1,0 +1,76 @@
+.sign_container {
+  width: 85%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-container {
+  width: 360px;
+  margin: 90px 20px 20px;
+  padding: 30px;
+  box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  background: white;
+  border: 2px solid rgba(150, 150, 150, 0.5);
+}
+
+.heading {
+  font-size: 2.5em;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.form-container label {
+  color: #333;
+  font-weight: 700;
+  margin-bottom: 1px;
+}
+
+.form-input {
+  width: 97%;
+  height: 27px;
+  border-radius: 3px;
+  outline: none;
+  border: 1px solid #a6a6a6;
+  margin-bottom: 10px;
+  margin-top: 1px;
+}
+
+.btn {
+  border-radius: 36px;
+  background: #fee996;
+  cursor: pointer;
+  margin-top: 15px;
+  padding: 10px 20px;
+}
+
+.btn:hover {
+  background: #003366;
+  color: white;
+}
+
+.no-account-text {
+  font-size: 14px;
+  text-align: center;
+  color: #333;
+}
+
+.create_accountinfo button {
+  background: linear-gradient(to bottom, #f7f8fa, #e7e9ec);
+  height: 29px;
+  width: 300px;
+  border-radius: 3px;
+  border: 1px solid #adb1b8;
+  outline: none;
+  margin-top: 10px;
+}
+
+.error {
+  color: #ff0099;
+  margin: 1px 2px;
+  font-size: 0.8em;
+  font-weight: bold;
+}
