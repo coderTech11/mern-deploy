@@ -2,6 +2,7 @@ const User = require("../model/userSchema");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
+//create user
 const createUser = async (req, res) => {
   try {
     //check if email already exists
@@ -15,26 +16,13 @@ const createUser = async (req, res) => {
     // create a user in db
     const user = await User.create(req.body);
 
-    //generate a token
-    const token = jwt.sign(
-      { id: user._id, email: user.email },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: "1d",
-      }
-    );
-
-    res.cookie("jwt", token, {
-      httpOnly: true,
-    });
-
     res.status(201).json({
       user: {
         id: user._id,
         email: user.email,
         password: user.password,
+        role: user.role,
       },
-      token,
     });
   } catch (error) {
     if (error.name === "ValidationError") {
@@ -47,6 +35,7 @@ const createUser = async (req, res) => {
   }
 };
 
+//login user
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -59,7 +48,7 @@ const loginUser = async (req, res) => {
           { id: user._id, email: user.email },
           process.env.JWT_SECRET,
           {
-            expiresIn: "1d",
+            expiresIn: "15d",
           }
         );
 
@@ -72,6 +61,7 @@ const loginUser = async (req, res) => {
             id: user._id,
             email: user.email,
             password: user.password,
+            role: user.role,
           },
           token,
         });
@@ -90,12 +80,14 @@ const loginUser = async (req, res) => {
   }
 };
 
+//logout user
 const logOutUser = (req, res) => {
   res.cookie("jwt", "", { maxAge: 1 });
   res.status(200).json({ message: "Logged out successfully" });
 };
 
-const checkAuth = (req, res) => {
+//check auth
+const checkAuth = async (req, res) => {
   const token = req.cookies.jwt;
 
   if (!token) {
@@ -103,8 +95,18 @@ const checkAuth = (req, res) => {
   }
 
   try {
-    jwt.verify(token, process.env.JWT_SECRET);
-    res.status(200).json({ authenticated: true });
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    //find the user in database
+    const user = await User.findById(decoded.id);
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ authenticated: false, message: "User not found" });
+    }
+
+    res.status(200).json({ authenticated: true, role: user.role });
   } catch {
     res.status(401).json({ authenticated: false });
   }

@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const User = require("../model/userSchema");
 
 const requireAuth = (req, res, next) => {
   const { jwt: token } = req.cookies;
@@ -23,4 +24,19 @@ const requireAuth = (req, res, next) => {
   }
 };
 
-module.exports = { requireAuth };
+const isAdmin = async (req, res, next) => {
+  try {
+    //req.user should already set by requireAuth
+    const user = await User.findById(req.user.id);
+
+    if (!user || user.role !== "admin") {
+      return res.status(403).json({ message: "Access denied: Admins only" });
+    }
+
+    next();
+  } catch (error) {
+    res.status(401).json({ message: "Unauthorized" });
+  }
+};
+
+module.exports = { requireAuth, isAdmin };

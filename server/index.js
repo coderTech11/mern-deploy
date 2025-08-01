@@ -4,12 +4,13 @@ const express = require("express");
 const app = express();
 const authRoutes = require("./routes/auth");
 const cookieParser = require("cookie-parser");
-const { requireAuth } = require("./middleware/authMiddleware");
+const { requireAuth, isAdmin } = require("./middleware/authMiddleware");
 const connectDB = require("./db/connection");
 const productRouter = require("./routes/productRoutes");
 const cors = require("cors");
 const cartRouter = require("./routes/cartRoutes");
 const paymentRouter = require("./routes/paymentRoutes");
+const adminRouter = require("./routes/adminRoutes");
 
 //middleware
 app.use(express.json());
@@ -28,6 +29,7 @@ app.use(authRoutes);
 app.use("/api/products", productRouter);
 app.use("/cart", requireAuth, cartRouter);
 app.use("/payment", requireAuth, paymentRouter);
+app.use("/admin", requireAuth, isAdmin, adminRouter);
 
 connectDB().then(() => {
   //Start the server
