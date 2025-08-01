@@ -20,8 +20,11 @@ export default function PurchaseProduct() {
         setSortedDates(response.data.sortedDates);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching purchased items", error);
-        setError("Failed to load purchased items.Please try again");
+        if (error.response && error.response.status === 401) {
+          setError("Session expired.Please login again");
+        } else {
+          setError("Failed to load purchased items.Please try again");
+        }
         setLoading(false);
       }
     };

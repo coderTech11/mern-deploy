@@ -23,6 +23,9 @@ export default function CartProvider({ children }) {
         );
         setCartItems(response.data); //update cart items
       } catch (error) {
+        if (error.response && error.response.status === 401) {
+          alert("Session expired.Please login again");
+        }
         console.error("Error fetching cart items", error);
       }
     };
@@ -44,6 +47,9 @@ export default function CartProvider({ children }) {
       console.log("cart response", response);
       setCartItems(response.data);
     } catch (error) {
+      if (error.response && error.response.status === 401) {
+        alert("Session expired.Please login again");
+      }
       console.error("Error adding to cart", error);
     }
   };
@@ -63,6 +69,9 @@ export default function CartProvider({ children }) {
       console.log("deleted cart response", response);
       setCartItems(response.data);
     } catch (error) {
+      if (error.response && error.response.status === 401) {
+        alert("Session expired.Please login again");
+      }
       console.error("Error removing from cart", error);
     }
   };

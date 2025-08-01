@@ -5,6 +5,7 @@ export const AuthContext = createContext();
 
 export default function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userRole, setUserRole] = useState("");
 
   //check authentication status
   useEffect(() => {
@@ -17,6 +18,11 @@ export default function AuthProvider({ children }) {
           }
         );
         setIsAuthenticated(response.status === 200);
+
+        //set user role
+        if (response.data && response.data.role) {
+          setUserRole(response.data.role);
+        }
       } catch (error) {
         if (error.response && error.response.status === 401) {
           console.log("User is not authenticated");
@@ -24,6 +30,7 @@ export default function AuthProvider({ children }) {
           console.error("Error checking auth", error);
         }
         setIsAuthenticated(false);
+        setUserRole("");
       }
     };
     checkAuth();
@@ -51,7 +58,13 @@ export default function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, setIsAuthenticated, logoutuser }}
+      value={{
+        isAuthenticated,
+        setIsAuthenticated,
+        logoutuser,
+        userRole,
+        setUserRole,
+      }}
     >
       {children}
     </AuthContext.Provider>

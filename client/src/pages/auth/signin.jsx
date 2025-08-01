@@ -19,14 +19,20 @@ export default function SignIn() {
 
   const navigate = useNavigate();
 
-  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, setIsAuthenticated, setUserRole } =
+    useContext(AuthContext);
+  const [adminLogin, setAdminLogin] = useState(false);
 
   //Redirect to home if already authenticated
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/");
+      if (adminLogin) {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/");
+      }
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, adminLogin, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -51,7 +57,10 @@ export default function SignIn() {
 
       if (response.data && response.data.user) {
         setIsAuthenticated(true);
-        navigate("/");
+        setUserRole(response.data.user.role);
+        if (response.data.user.role === "admin") {
+          setAdminLogin(true);
+        }
       }
     } catch (error) {
       if (error.response && error.response.data.errors) {
