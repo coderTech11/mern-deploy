@@ -88,6 +88,7 @@ const logOutUser = (req, res) => {
     httpOnly: true,
     sameSite: "None",
     secure: true,
+    path: "/",
     maxAge: 1,
   });
   res.status(200).json({ message: "Logged out successfully" });
