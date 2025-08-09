@@ -54,8 +54,6 @@ const loginUser = async (req, res) => {
 
         res.cookie("jwt", token, {
           httpOnly: true,
-          sameSite: "None",
-          secure: true,
         });
 
         res.status(201).json({
@@ -84,13 +82,7 @@ const loginUser = async (req, res) => {
 
 //logout user
 const logOutUser = (req, res) => {
-  res.cookie("jwt", "", {
-    httpOnly: true,
-    sameSite: "None",
-    secure: true,
-    path: "/",
-    maxAge: 1,
-  });
+  res.cookie("jwt", "", { maxAge: 1 });
   res.status(200).json({ message: "Logged out successfully" });
 };
 
