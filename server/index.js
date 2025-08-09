@@ -17,12 +17,12 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.ORIGIN,
     credentials: true,
   })
 );
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 //routes
 app.use(authRoutes);
