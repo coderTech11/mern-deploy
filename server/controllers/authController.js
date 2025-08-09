@@ -54,6 +54,8 @@ const loginUser = async (req, res) => {
 
         res.cookie("jwt", token, {
           httpOnly: true,
+          sameSite: "None",
+          secure: true,
         });
 
         res.status(201).json({
