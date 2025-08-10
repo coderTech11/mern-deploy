@@ -46,7 +46,6 @@ export default function AuthProvider({ children }) {
       );
       if (response.status === 200) {
         setIsAuthenticated(false);
-         setUserRole(null);
         localStorage.clear();
         window.location.href = "/signin";
       } else {
