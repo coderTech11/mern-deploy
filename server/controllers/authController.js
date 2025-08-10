@@ -84,7 +84,7 @@ const loginUser = async (req, res) => {
 
 //logout user
 const logOutUser = (req, res) => {
- res.clearCookie("jwt", {
+   res.cookie("jwt", "", {
 httpOnly: true,
 secure: true,
 sameSite: "none",
