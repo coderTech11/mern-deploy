@@ -7,11 +7,12 @@ export default function HomeRouteGuard({ children }) {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("isauth", isAuthenticated);
     if (isAuthenticated && userRole === "admin") {
       navigate("/admin/dashboard", { replace: true });
-    } else if (!isAuthenticated) {
+    } /*  else if (!isAuthenticated) {
       navigate("/", { replace: true });
-    }
+    } */
   }, [isAuthenticated, userRole, navigate]);
 
   //only render children if not admin
